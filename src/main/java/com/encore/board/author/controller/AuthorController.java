@@ -21,11 +21,17 @@ public class AuthorController {
         this.service = service;
     }
 
-    @PostMapping("/author/save")
-    @ResponseBody
-    public String authorSave(AuthorSaveReqDTO authorSaveReqDTO) {
+    @GetMapping("/author/create")
+    public String create() {
+        return "author/author-create";
+    }
+
+
+    @PostMapping("/author/create")
+    public String authorSave(AuthorSaveReqDTO authorSaveReqDTO, Model model) {
         service.save(authorSaveReqDTO);
-        return "OK";
+        model.addAttribute("authorList",service.findAll());
+        return "author/author-list";
     }
 
     @GetMapping("/author/list")
@@ -39,4 +45,16 @@ public class AuthorController {
         model.addAttribute("author",service.findById(id));
         return "author/author-detail";
     }
+
+    @PostMapping("/author/update/{id}")
+    public String authorUpdate(@PathVariable(value = "id")Long id, AuthorSaveReqDTO authorSaveReqDTO){
+        return "redirect:/author/detail/"+id;
+    }
+
+    @GetMapping("/author/delete/{id}")
+    public String authorDelete(@PathVariable(value="id")Long id, Model model){
+        service.delete(id);
+        return "redirect:/author/list";
+    }
+
 }

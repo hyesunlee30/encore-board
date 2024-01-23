@@ -22,39 +22,42 @@
 <body>
 <div th:replace="header :: headerFragment"></div>
 <div class="container">
-    <div class="page-header"><h1>회원 상세보기</h1></div>
-    <table class="table">
-        <tr><td>ID : </td><td th:text="${author.id}"></td></tr>
-        <tr><td>이름 : </td><td th:text="${author.name}"></td></tr>
-        <tr><td>이메일 : </td><td th:text="${author.email}"></td></tr>
-        <tr><td>패스워드 : </td><td th:text="${author.password}"></td></tr>
-        <tr><td>가입시간 : </td><td th:text="${author.createdTime}"></td></tr>
-        <tr><td>Role : </td><td th:text="${author.role}"></td></tr>
-    </table>
+    <div class="page-header"><h1>글 상세보기</h1></div>
+    <form>
+        <div class="form-group">
+            <label for="id">id : </label>
+            <input type="text" name="id"  class="form-control" th:value="${post.id}" readonly>
+        </div>
+        <div class="form-group">
+            <label for="title"> title : </label>
+            <input type="text" name="title"class="form-control" th:value="${post.title}">
+        </div>
+        <div class="form-group">
+            <label for="contents">contents :</label>
+            <textarea cols="50" rows="10" class="form-control" th:value="${post.contents}" th:text="${post.contents}"></textarea>
+        </div>
+
+    </form>
     <div class="pull-right">
         <button class="btn btn-primary" onclick="update()">수정</button>
     </div>
     <div class="pull-right">
-        <a class="btn btn-primary" th:href="@{|/author/delete/${author.id}|}">삭제</a>
+        <a class="btn btn-primary" th:href="@{|/post/delete/${post.id}|}">삭제</a>
     </div>
     <br>
     <div id="update-form" class="mt-4">
-        <form method="POST" th:action="@{|/author/update/${author.id}|}">
+        <form method="POST" th:action="@{|/post/update/${post.id}|}">
             <div class="form-group">
                 <label for="id">id : </label>
-                <input type="text" name="id" id="id" class="form-control" th:value="${author.id}" readonly>
+                <input type="text" name="id" id="id" class="form-control" th:value="${post.id}" readonly>
             </div>
             <div class="form-group">
-                <label for="name"> name : </label>
-                <input type="text" name="name" id="name"  class="form-control" th:value="${author.name}">
+                <label for="title"> title : </label>
+                <input type="text" name="title" id="title"  class="form-control" th:value="${post.title}">
             </div>
             <div class="form-group">
-                <label for="name">email :</label>
-                <input type="text" name="email" id="email" class="form-control" th:value="${author.email}" >
-            </div>
-            <div class="form-group">
-                <label for="name">Role :</label>
-                <input type="text" name="role" id="role" class="form-control" th:value="${author.role}" >
+                <label for="contents">contents :</label>
+                <textarea cols="50" rows="10" id="contents" class="form-control" th:value="${post.contents}" th:text="${post.contents}"></textarea>
             </div>
             <div class="form-group">
                 <p><button class="btn btn-primary mt-3" type="submit">수정완료</button></p>

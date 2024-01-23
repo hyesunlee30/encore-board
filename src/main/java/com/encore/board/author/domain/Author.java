@@ -1,18 +1,17 @@
 package com.encore.board.author.domain;
 
+import com.encore.board.author.dto.AuthorSaveReqDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import com.encore.board.author.domain.Role;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Getter
 @Builder
@@ -42,4 +41,13 @@ public class Author {
     @UpdateTimestamp
     @Column(columnDefinition = "TIMESTAMP ON UPDATE CURRENT_TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime updatedTime;
+
+    public Author update(Author author, AuthorSaveReqDTO reqDTO) {
+
+        author.name = reqDTO.getName();
+        author.email = reqDTO.getEmail();
+        author.password = reqDTO.getEmail();
+        author.role = Objects.equals(reqDTO.getRole(), "관리자") ?Role.ADMIN:Role.USER;
+        return author;
+    }
 }

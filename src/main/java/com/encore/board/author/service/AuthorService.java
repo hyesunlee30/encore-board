@@ -21,8 +21,15 @@ public class AuthorService {
 
     public void save(AuthorSaveReqDTO authorSaveReqDTO) {
 
+        Role role = null;
+        if(authorSaveReqDTO.getRole() == null || authorSaveReqDTO.getRole().equals("user")) {
+            role =Role.USER;
+        } else {
+            role = Role.ADMIN;
+        }
+
         Author author = Author.builder()
-                .role(Role.USER)
+                .role(role)
                 .name(authorSaveReqDTO.getName())
                 .password(authorSaveReqDTO.getPassword())
                 .email(authorSaveReqDTO.getEmail())
@@ -41,9 +48,22 @@ public class AuthorService {
 
     public AuthorRespDTO findById(Long id) {
         Author author = repository.findById(id).orElseThrow(()-> new NoSuchElementException("찾는 회원이 없습니다."));
+        return AuthorRespDTO.of(author);
+    }
+
+    public AuthorRespDTO update(Long id, AuthorSaveReqDTO authorSaveReqDTO) {
+        Author author = repository.findById(id).orElseThrow(()-> new NoSuchElementException("수정할 회원이 없습니다."));
+        author.update(author,authorSaveReqDTO);
+
+        repository.save(author);
 
         return AuthorRespDTO.of(author);
     }
 
+    public void delete(Long id) {
+        Author author = repository.findById(id).orElseThrow(()-> new NoSuchElementException("삭제할 회원이 없습니다."));
+        repository.delete(author);
+
+    }
 
 }

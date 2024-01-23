@@ -16,6 +16,7 @@ public class AuthorRespDTO {
     private String password;
     private LocalDateTime createdTime;
     private LocalDateTime updatedTime;
+    private String role;
 
     public static AuthorRespDTO of(Author author) {
         AuthorRespDTO respDTO = AuthorRespDTO.builder().
@@ -25,6 +26,7 @@ public class AuthorRespDTO {
                 .password(author.getPassword())
                 .createdTime(author.getCreatedTime())
                 .updatedTime(author.getUpdatedTime())
+                .role(author.getRole().getLabel())
                 .build();
         return  respDTO;
     }
