@@ -14,10 +14,10 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@Entity
+@Builder // 빌더
+@AllArgsConstructor // 빌더
+@NoArgsConstructor // 리플렉션
+@Entity // db
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
