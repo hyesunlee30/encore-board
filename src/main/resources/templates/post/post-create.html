@@ -12,17 +12,36 @@
     <form method="POST" action="/post/create">
         <div class="form-group">
             <label for="title"> title : </label>
-            <input type="text" name="title" id="title"  class="form-control">
+            <input type="text" name="title" id="title"  class="form-control" required>
         </div>
         <div class="form-group">
             <label for="contents">contents :</label>
-            <textarea name="contents" id="contents" cols="50" rows="10" class="form-control"></textarea>
+            <textarea name="contents" id="contents" cols="50" rows="10" class="form-control" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="author_email">email :</label>
+            <input type="text" name="author_email" id="author_email"  class="form-control">
+        </div>
+        <div class="form-group">
+            <label>예약 글쓰기</label>
+            <input type="radio" name="appointment" value="Y"> YES
+            <input type="radio" name="appointment" value="N" checked> NO
+            <label>예약시간 </label>
+            <input type="datetime-local" name="appointmentTime" id="appointmentTime">
         </div>
         <div class="form-group">
             <p><button class="btn btn-primary mt-3" type="submit">글 작성</button></p>
         </div>
+        <div th:if="${errorMessage != null}">
+            <input type="hidden" id="error" th:value="${errorMessage}"></input>
+        </div>
     </form>
 </div>
 </body>
-
+<script>
+    let errorMessage = document.getElementById("error")
+    if(errorMessage != null) {
+        alert(errorMessage.value);
+    }
+</script>
 </html>

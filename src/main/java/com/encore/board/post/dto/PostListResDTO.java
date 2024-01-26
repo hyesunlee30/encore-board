@@ -15,6 +15,7 @@ public class PostListResDTO {
     private String contents;
     private LocalDateTime createdTime;
     private LocalDateTime updatedTime;
+    private String author_email;
 
     public static PostListResDTO of(Post post) {
         PostListResDTO dto = PostListResDTO.builder()
@@ -23,6 +24,7 @@ public class PostListResDTO {
                 .contents(post.getContents())
                 .createdTime(post.getCreatedTime())
                 .updatedTime(post.getUpdatedTime())
+                .author_email(post.getAuthor()==null?"익명유저":post.getAuthor().getEmail())
                 .build();
         return  dto;
     }

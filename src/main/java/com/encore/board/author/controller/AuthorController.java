@@ -29,9 +29,15 @@ public class AuthorController {
 
     @PostMapping("/author/create")
     public String authorSave(AuthorSaveReqDTO authorSaveReqDTO, Model model) {
-        service.save(authorSaveReqDTO);
-        model.addAttribute("authorList",service.findAll());
-        return "author/author-list";
+        try {
+            service.save(authorSaveReqDTO);
+            return "redirect:author/author-list";
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            model.addAttribute("errorMessage", e.getMessage());
+            return "author/author-create";
+        }
+
     }
 
     @GetMapping("/author/list")
@@ -48,6 +54,8 @@ public class AuthorController {
 
     @PostMapping("/author/update/{id}")
     public String authorUpdate(@PathVariable(value = "id")Long id, AuthorSaveReqDTO authorSaveReqDTO){
+
+        service.update(id, authorSaveReqDTO);
         return "redirect:/author/detail/"+id;
     }
 
@@ -55,6 +63,22 @@ public class AuthorController {
     public String authorDelete(@PathVariable(value="id")Long id, Model model){
         service.delete(id);
         return "redirect:/author/list";
+    }
+
+    @GetMapping("/author/{id}/circle/entity")
+    @ResponseBody
+    //연관관계가 있는 Author엔티티를 json으로 직렬화를 하게 될 경우
+    //순환참조 이슈 발생하므로, dto 사용필요
+    public Author circleIssueTest1 (@PathVariable(value = "id")Long id) {
+        return service.findById2(id);
+    }
+
+    @GetMapping("/author/{id}/circle/dto")
+    @ResponseBody
+    //연관관계가 있는 Author엔티티를 json으로 직렬화를 하게 될 경우
+    //순환참조 이슈 발생하므로, dto 사용필요
+    public AuthorRespDTO circleIssueTest2 (@PathVariable(value = "id")Long id) {
+        return service.findById(id);
     }
 
 }

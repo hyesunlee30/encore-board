@@ -9,5 +9,5 @@ spring:
     database-platform: org.hibernate.dialect.MariaDBDialect
     generate-ddl: true
     hibernate :
-      ddl-auto: update
-      show_sql: true
+      ddl-auto: update #컬럼 속성변경안 안먹히기때문에 create 하지말고 alter문 날리는 게 낫다
+    show_sql: true

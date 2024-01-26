@@ -33,8 +33,17 @@
         <div class="form-group">
             <p><button class="btn btn-primary mt-3" type="submit">회원가입</button></p>
         </div>
+        <div th:if="${errorMessage != null}">
+            <input class="hidden" id="error" th:value="${errorMessage}"></input>
+        </div>
     </form>
 </div>
-</body>
 
+</body>
+<script>
+    let errorMessage = document.getElementById("error")
+    if(errorMessage != null) {
+        alert(errorMessage.value);
+    }
+</script>
 </html>
