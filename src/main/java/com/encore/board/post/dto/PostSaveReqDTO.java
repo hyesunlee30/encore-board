@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 
 @Data
 public class PostSaveReqDTO {
-    private String author_email;
     private String title;
     private String contents;
     private String appointment;

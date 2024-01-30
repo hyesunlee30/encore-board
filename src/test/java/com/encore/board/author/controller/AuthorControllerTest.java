@@ -35,6 +35,11 @@ public class AuthorControllerTest {
     @MockBean
     private AuthorService authorService;
 
+    @Test
+    void LogTest() {
+
+    }
+
 //    @Test
 //    //@WithMockUser
 //    void authorFindByid() throws Exception {

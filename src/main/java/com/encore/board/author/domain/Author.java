@@ -22,17 +22,13 @@ public class Author {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(length = 20, nullable = false)
-
     private String name;
-
     @Column(length = 20, unique = true, nullable = false)
     private String email;
     @Column(nullable = false)
     private String password;
-
     @Enumerated(EnumType.STRING)
     private Role role;
-
     //author를 조회할 때 post객체가 필요할 시에 선언
     //필요없으면 안 쓰는게 나은데 왜냐면
     //Author 객체를 json으로 직렬화 할 때
@@ -66,7 +62,7 @@ public class Author {
     public void update(AuthorSaveReqDTO reqDTO) {
         this.name = reqDTO.getName();
         this.email = reqDTO.getEmail();
-        this.password = reqDTO.getPassword();
+        this.password = reqDTO.getPw();
         this.role = Objects.equals(reqDTO.getRole(), "관리자") ?Role.ADMIN:Role.USER;
     }
     public void updateAuthor(String name, String password) {

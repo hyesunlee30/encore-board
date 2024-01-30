@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -38,8 +40,9 @@ public class PostService {
 
 
 
-    public void save(PostSaveReqDTO postSaveReqDTO) {
-        Author author = authorRepository.findByEmail(postSaveReqDTO.getAuthor_email()).orElse(null);
+    public void save(PostSaveReqDTO postSaveReqDTO) throws IllegalArgumentException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Author author = authorRepository.findByEmail(authentication.getName()).orElse(null);
         LocalDateTime localDateTime = null;
         String appointment = null;
         if(postSaveReqDTO.getAppointment().equals("Y")

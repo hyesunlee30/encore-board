@@ -6,25 +6,33 @@ import com.encore.board.author.dto.AuthorRespDTO;
 import com.encore.board.author.dto.AuthorSaveReqDTO;
 import com.encore.board.author.repository.AuthorRepository;
 import com.encore.board.post.domain.Post;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class AuthorService {
     private final AuthorRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
-    AuthorService(AuthorRepository repository) {
+    AuthorService(AuthorRepository repository,PasswordEncoder passwordEncoder) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
+
     }
 
+
     public void save(AuthorSaveReqDTO authorSaveReqDTO) throws IllegalArgumentException {
+
+        System.out.println(authorSaveReqDTO.getPw());
 
         if(repository.findByEmail(authorSaveReqDTO.getEmail()).isPresent()) throw new IllegalArgumentException("중복이메일");
 
@@ -56,7 +64,7 @@ public class AuthorService {
         Author author = Author.builder()
                 .role(role)
                 .name(authorSaveReqDTO.getName())
-                .password(authorSaveReqDTO.getPassword())
+                .password(passwordEncoder.encode(authorSaveReqDTO.getPw()))
                 .email(authorSaveReqDTO.getEmail())
                 .build();
 
@@ -84,14 +92,14 @@ public class AuthorService {
         return authors.stream().map(AuthorRespDTO::of).collect(Collectors.toList());
     }
 
-    public AuthorRespDTO findById(Long id) {
-        Author author = repository.findById(id).orElseThrow(()-> new NoSuchElementException("찾는 회원이 없습니다."));
+    public AuthorRespDTO findById(Long id) throws EntityNotFoundException{
+        Author author = repository.findById(id).orElseThrow(()-> new EntityNotFoundException("찾는 회원이 없습니다."));
         return AuthorRespDTO.of(author);
     }
 
-    public Author findById2(Long id) {
+    public Author findById2(Long id) throws EntityNotFoundException {
         System.out.println(id);
-        Author author = repository.findById(id).orElseThrow(()-> new NoSuchElementException("찾는 회원이 없습니다."));
+        Author author = repository.findById(id).orElseThrow(()-> new EntityNotFoundException("찾는 회원이 없습니다."));
         return author;
     }
 

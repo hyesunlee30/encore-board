@@ -1,4 +1,21 @@
 spring:
+  security:
+    #email/password 넣고 회원가입 => 암호화된 password가 DB 저장
+    #1) 인증불필요 url -> 바로 화면 return
+    #2) 인증필요 url => /author/login-page
+    #3) 로그인 - doLogin
+    # 로그인 과정: DB에서 해당 사용자 조회 -> DB의 값과 화면에서 사용자가 입력값 비교
+    # DB에서 해당 사용자 조회 -- 이건 우리가 해야한다.
+    # 스프링에서 암호화된 값과 DB에 암호화된 값이 같은지 확인.
+    user:
+      name: lee
+      password:
+      #password: 1234
+      #password: '{bcrypt}$2a$10$Eq2lXabWOPY8eFKsQf44GOzuKL5TFwAlqEGCRnBxPUcmicabWofhG'
+      #name: naver
+      #1234
+      #password: "{bcrypt}$2a$10$8lsUx6AKh1qEUm.QITtv6eechiiS6/QYGYHBvRXymu22ZHlJ./lPG"
+      #roles: USER, ADMIN
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://localhost:3306/board
@@ -11,3 +28,10 @@ spring:
     hibernate :
       ddl-auto: update #컬럼 속성변경안 안먹히기때문에 create 하지말고 alter문 날리는 게 낫다
     show_sql: true
+#logging:
+#  file:
+#    name: logs/app.log
+#  level:
+#    #trace < debug < info < error < 순서의 로그레벨을 가짐
+#    #info로 설정시 trace, debug 모드는 출력되지 않음
+#    root: info

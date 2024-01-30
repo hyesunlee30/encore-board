@@ -4,6 +4,7 @@ import com.encore.board.author.domain.Author;
 import com.encore.board.author.dto.AuthorRespDTO;
 import com.encore.board.author.dto.AuthorSaveReqDTO;
 import com.encore.board.author.service.AuthorService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,12 +27,18 @@ public class AuthorController {
         return "author/author-create";
     }
 
+    @GetMapping("/author/login-page")
+    public String authorLogin() {
+        return "author/login-page";
+    }
+
+
 
     @PostMapping("/author/create")
     public String authorSave(AuthorSaveReqDTO authorSaveReqDTO, Model model) {
         try {
             service.save(authorSaveReqDTO);
-            return "redirect:author/author-list";
+            return "redirect:list";
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
             model.addAttribute("errorMessage", e.getMessage());
@@ -41,6 +48,7 @@ public class AuthorController {
     }
 
     @GetMapping("/author/list")
+    @PreAuthorize("hasRole('ADMIN')")
     public String authorList(Model model) {
          model.addAttribute("authorList",service.findAll());
         return "author/author-list";

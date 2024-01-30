@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -34,8 +36,10 @@ public class PostController {
 
 
     @PostMapping("/post/create")
-    public String postSave(PostSaveReqDTO postSaveReqDTO, Model model, Pageable pageable) {
+    public String postSave(PostSaveReqDTO postSaveReqDTO, Model model, HttpSession session) {
         try {
+            //session을 통해 email을 뽑을 수 있다.
+            //session.getAttribute("email")
             service.save(postSaveReqDTO);
             return "redirect:/post/list";
         } catch (IllegalArgumentException e) {
